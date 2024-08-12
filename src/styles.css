@@ -1,4 +1,53 @@
 /* You can add global styles to this file, and also import other style files */
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+
+* {
+  font-family: "Raleway"
+    /* Replace with your custom font */
+    , sans-serif !important;
+  font-weight: 550;
+  color: #5E5E5E;
+  box-sizing: border-box;
+  /* Add !important to overwrite all elements */
+}
+
+mat-icon {
+  font-family: 'Material Icons' !important;
+  ;
+  margin: 0;
+  padding: 0;
+}
+
+.mat-expansion-panel-body {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 1vh !important;
+}
+
+.scroll-style::-webkit-scrollbar-track {
+  /* -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); */
+  /* border-radius: 10px; */
+  background-color: transparent;
+}
+
+.scroll-style::-webkit-scrollbar {
+  width: 0.5vw;
+  height: 1vh;
+}
+
+.scroll-style::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  /* -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); */
+
+  background-color: #808080;
+}
