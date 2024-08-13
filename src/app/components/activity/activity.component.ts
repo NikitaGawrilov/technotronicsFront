@@ -1,5 +1,6 @@
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { DeviceService } from 'src/app/services/device.service';
 import { Battery, Device } from 'src/app/shared/interfaces';
 
 @Component({
@@ -7,7 +8,7 @@ import { Battery, Device } from 'src/app/shared/interfaces';
   templateUrl: './activity.component.html',
   styleUrls: ['./activity.component.css']
 })
-export class ActivityComponent {
+export class ActivityComponent implements OnInit{
 
   devices: Device[] = [
     {id: 1, name: 'dev1', created_at: '123123', paired_batteries: [
@@ -23,6 +24,22 @@ export class ActivityComponent {
     {id: 2, name: 'bat2', paired_device_id: null, created_at: '123123'},
     {id: 3, name: 'bat3', paired_device_id: null, created_at: '123123'},
   ]
+
+  constructor (
+    private deviceS: DeviceService
+  ) {}
+
+  ngOnInit(): void {
+    console.log(this.refresh())
+  }
+
+  refresh() {
+    return this.deviceS.getAll().subscribe({
+      next: (res) => {
+        console.log(res);
+      }
+    })
+  }
 
 
   getDevices() {

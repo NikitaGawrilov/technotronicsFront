@@ -67,6 +67,10 @@
               "browserTarget": "technotronicsFront:build:development"
             }
           },
+          "options": {
+            "browserTarget": "technotronicsFront:build",
+            "proxyConfig": "proxy.conf.json"
+          },
           "defaultConfiguration": "development"
         },
         "extract-i18n": {
