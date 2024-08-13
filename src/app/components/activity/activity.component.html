@@ -1,6 +1,9 @@
 <div class="wrapper">
     <div class="half" style="font-size: 1.3em;">
-        <span>Устройства</span>
+        <div class="header-wrapper">
+            <span>Устройства</span>
+            <mat-icon (click)="createDevice()">add</mat-icon>
+        </div>
         <div class="list-wrapper">
             <div class="list scroll-style" cdkDropListGroup>
                 <mat-accordion class="bayan" [multi]="true">
@@ -11,8 +14,8 @@
                             </mat-panel-title>
                         </mat-expansion-panel-header>
                         <div class="icon-container">
-                            <mat-icon style="display: inline;">edit</mat-icon>
-                            <mat-icon style="display: inline;">clear</mat-icon>
+                            <mat-icon style="display: inline;" (click)="editDevice(device.id)">edit</mat-icon>
+                            <mat-icon style="display: inline;" (click)="deleteDevice(device.id)">clear</mat-icon>
                         </div>
                         <div class="list" cdkDropList [cdkDropListConnectedTo]="batteryList" [id]="'device'+device.id"
                         [cdkDropListData]="device.paired_batteries" (cdkDropListDropped)="drop($event)"
@@ -32,15 +35,18 @@
         </div>
     </div>
     <div class="half" style="font-size: 1.3em;">
-        <span>Аккумуляторы</span>
+        <div class="header-wrapper">
+            <span>Аккумуляторы</span>
+            <mat-icon (click)="createBattery()">add</mat-icon>
+        </div>
         <div class="list-wrapper">
             <div class="list scroll-style" cdkDropList #batteryList="cdkDropList" [cdkDropListData]="batteries"
             (cdkDropListDropped)="drop($event)" [cdkDropListConnectedTo]="getDevices()">
                 <div class="battery" *ngFor="let battery of batteries" cdkDrag>
                     <span>{{battery.name}}</span>
                     <div class="icon-container">
-                        <mat-icon>edit</mat-icon>
-                        <mat-icon>clear</mat-icon>
+                        <mat-icon (click)="editBattery(battery.id)">edit</mat-icon>
+                        <mat-icon (click)="deleteBattery(battery.id)">clear</mat-icon>
                     </div>
                 </div>
             </div>

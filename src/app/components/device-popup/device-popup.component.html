@@ -1,0 +1,10 @@
+<h1 mat-dialog-title class="title" *ngIf="data.mode == 'create'">Добавление устройства</h1>
+<h1 mat-dialog-title class="title" *ngIf="data.mode == 'edit'">Редактирование устройства</h1>
+<div mat-dialog-content class="content">
+    <label for="deviceNameInput">Введите имя устройства:</label>
+    <input #deviceNameInput type="text" [(ngModel)]="deviceName" [value]="deviceName">
+</div>
+<div mat-dialog-actions class="action-row">
+    <button id="cancel" (click)="onNoClick()">Отмена</button>
+    <button (click)="try()">Подтвердить</button>
+</div>

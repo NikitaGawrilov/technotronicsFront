@@ -1,0 +1,22 @@
+<h1 mat-dialog-title class="title" *ngIf="data.mode == 'create'">Добавление аккумулятора</h1>
+<h1 mat-dialog-title class="title" *ngIf="data.mode == 'edit'">Редактирование аккумулятора</h1>
+<div mat-dialog-content class="content">
+    <div class="block">
+        <label for="deviceNameInput">Введите имя аккумулятора: *</label>
+        <input #deviceNameInput type="text" [(ngModel)]="batteryName" [value]="batteryName">
+    </div>
+    <div class="block" *ngIf="data.mode == 'create'">
+        <mat-form-field style="width: 100%;">
+            <mat-label>Выберите устройство</mat-label>
+            <mat-select [(ngModel)]="chosenDeviceId" name="selectedModel" required>
+              <mat-option *ngFor="let device of data.devices" [value]="device.id">
+                {{ device.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+    </div>
+</div>
+<div mat-dialog-actions class="action-row">
+    <button id="cancel" (click)="onNoClick()">Отмена</button>
+    <button (click)="try()">Подтвердить</button>
+</div>

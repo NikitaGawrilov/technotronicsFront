@@ -1,9 +1,13 @@
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { concatMap, forkJoin, tap } from 'rxjs';
 import { BatteryService } from 'src/app/services/battery.service';
 import { DeviceService } from 'src/app/services/device.service';
 import { Battery, Device } from 'src/app/shared/interfaces';
+import { DevicePopupComponent } from '../device-popup/device-popup.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { BatteryPopupComponent } from '../battery-popup/battery-popup.component';
 
 @Component({
   selector: 'activity',
@@ -12,24 +16,14 @@ import { Battery, Device } from 'src/app/shared/interfaces';
 })
 export class ActivityComponent implements OnInit{
 
-  devices: Device[] = [
-    {id: 1, name: 'dev1', created_at: '123123', paired_batteries: [
-      {id: 4, name: 'bat4', paired_device_id: 1, created_at: '123123'},
-      {id: 4, name: 'bat4', paired_device_id: 1, created_at: '123123'},
-      {id: 4, name: 'bat4', paired_device_id: 1, created_at: '123123'},
-    ]},
-    {id: 2, name: 'dev2', created_at: '123123'},
-    {id: 3, name: 'dev3', created_at: '123123', paired_batteries: []},
-  ]
-  batteries: Battery[] = [
-    {id: 1, name: 'bat1', paired_device_id: null, created_at: '123123'},
-    {id: 2, name: 'bat2', paired_device_id: null, created_at: '123123'},
-    {id: 3, name: 'bat3', paired_device_id: null, created_at: '123123'},
-  ]
+  devices: Device[] = []
+  batteries: Battery[] = []
 
   constructor (
     private deviceS: DeviceService,
-    private batteryS: BatteryService
+    private batteryS: BatteryService,
+    public dialog: MatDialog,
+    private matSnackBar: MatSnackBar,
   ) {}
 
   ngOnInit(): void {
@@ -61,6 +55,80 @@ export class ActivityComponent implements OnInit{
         tap((res) => this.batteries = res)
       )
     ])
+  }
+
+  // Device methods block
+
+  createDevice() {
+    const dialogRef = this.dialog.open(DevicePopupComponent, {
+      data: { mode: 'create' },
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.matSnackBar.open(`Устройство ${result.name} добавлено`, 'OK', { duration: 3000 })
+        this.refresh()
+      }
+    });
+  }
+
+  editDevice(deviceId: number) {
+    const dialogRef = this.dialog.open(DevicePopupComponent, {
+      data: { mode: 'edit', deviceId: deviceId },
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.matSnackBar.open(`Устройство ${result.name} изменено`, 'OK', { duration: 3000 })
+        this.refresh()
+      }
+    });
+  }
+
+  deleteDevice(deviceId: number) {
+    this.deviceS.deleteDevice(deviceId).subscribe({
+      next: (res) => {
+        this.refresh()
+        this.matSnackBar.open(`Устройство ${res.name} удалено`, 'OK', { duration: 3000 })
+      }
+    })
+  }
+
+  // Battery methods block
+
+  createBattery() {
+    const dialogRef = this.dialog.open(BatteryPopupComponent, {
+      data: { mode: 'create', devices: this.devices },
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.matSnackBar.open(`Аккумулятор ${result.name} добавлен`, 'OK', { duration: 3000 })
+        this.refresh()
+      }
+    });
+  }
+
+  editBattery(batteryId: number) {
+    const dialogRef = this.dialog.open(BatteryPopupComponent, {
+      data: { mode: 'edit', devices: this.devices, batteryId: batteryId },
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.matSnackBar.open(`Аккумулятор ${result.name} изменён`, 'OK', { duration: 3000 })
+        this.refresh()
+      }
+    });
+  }
+
+  deleteBattery(batteryId: number) {
+    this.batteryS.deleteBattery(batteryId).subscribe({
+      next: (res) => {
+        this.refresh()
+        this.matSnackBar.open(`Аккумулятор ${res.name} удалён`, 'OK', { duration: 3000 })
+      }
+    })
   }
 
 

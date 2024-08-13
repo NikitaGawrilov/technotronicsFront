@@ -1,0 +1,34 @@
+.title {
+    font-size: 3vh;
+    padding: 0 2vh;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    gap: 1vh;
+    padding: 0 2vh;
+}
+
+.content input {
+    padding: 1vh;
+    border-radius: 10pt;
+    border: 0.1pt solid #908CAE;
+}
+
+.action-row {
+    display: flex;
+    flex-direction: row;
+    gap: 2%;
+    padding: 2vh;
+}
+
+.action-row>button {
+    width: 49%;
+}
+
+.action-row>#cancel {
+    background-color: white;
+    color: #5E5E5E;
+    border: 0.1pt solid #908CAE;
+}

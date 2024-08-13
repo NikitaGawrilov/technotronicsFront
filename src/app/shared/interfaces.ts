@@ -11,3 +11,5 @@ export interface Device {
     paired_batteries?: Battery[]
     created_at: string
 }
+
+export type PopupMode = 'create' | 'edit'
