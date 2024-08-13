@@ -13,3 +13,8 @@ export interface Device {
 }
 
 export type PopupMode = 'create' | 'edit'
+
+export interface PairParams {
+    battery_id: number,
+    device_id?: number
+}

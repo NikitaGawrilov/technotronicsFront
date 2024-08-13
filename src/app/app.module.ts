@@ -15,6 +15,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { CdkDrag, CdkDropList, CdkDropListGroup } from '@angular/cdk/drag-drop'
 import { InterceptorService } from './services/interceptor.service';
 import { DevicePopupComponent } from './components/device-popup/device-popup.component';
@@ -44,7 +45,8 @@ import { BatteryPopupComponent } from './components/battery-popup/battery-popup.
     MatSnackBarModule,
     MatDialogModule,
     MatSelectModule,
-    MatFormFieldModule
+    MatFormFieldModule,
+    MatTooltipModule
   ],
   providers: [
     { 

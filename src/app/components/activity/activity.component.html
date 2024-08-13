@@ -2,7 +2,7 @@
     <div class="half" style="font-size: 1.3em;">
         <div class="header-wrapper">
             <span>Устройства</span>
-            <mat-icon (click)="createDevice()">add</mat-icon>
+            <mat-icon (click)="createDevice()" matTooltip="Добавить устройство">add</mat-icon>
         </div>
         <div class="list-wrapper">
             <div class="list scroll-style" cdkDropListGroup>
@@ -14,19 +14,19 @@
                             </mat-panel-title>
                         </mat-expansion-panel-header>
                         <div class="icon-container">
-                            <mat-icon style="display: inline;" (click)="editDevice(device.id)">edit</mat-icon>
-                            <mat-icon style="display: inline;" (click)="deleteDevice(device.id)">clear</mat-icon>
+                            <mat-icon matTooltip="Изменить" style="display: inline;" (click)="editDevice(device.id)">edit</mat-icon>
+                            <mat-icon matTooltip="Удалить" style="display: inline;" (click)="deleteDevice(device.id)">clear</mat-icon>
                         </div>
                         <div class="list" cdkDropList [cdkDropListConnectedTo]="batteryList" [id]="'device'+device.id"
-                        [cdkDropListData]="device.paired_batteries" (cdkDropListDropped)="drop($event)"
+                        [cdkDropListData]="device.paired_batteries" (cdkDropListDropped)="drop($event, device)"
                         *ngIf="device.paired_batteries">
                             <div class="battery" *ngFor="let battery of device.paired_batteries" cdkDrag
                             [cdkDragData]="battery">
                                 <span>{{battery.name}}</span>
                                 <div class="icon-container">
-                                    <mat-icon>edit</mat-icon>
-                                    <mat-icon>clear</mat-icon>
-                                </div>
+                                    <mat-icon matTooltip="Изменить">edit</mat-icon>
+                                    <mat-icon matTooltip="Удалить" >clear</mat-icon>
+                                </div> 
                             </div>
                         </div>
                     </mat-expansion-panel>
@@ -37,16 +37,16 @@
     <div class="half" style="font-size: 1.3em;">
         <div class="header-wrapper">
             <span>Аккумуляторы</span>
-            <mat-icon (click)="createBattery()">add</mat-icon>
+            <mat-icon matTooltip="Добавить аккумулятор" (click)="createBattery()">add</mat-icon>
         </div>
         <div class="list-wrapper">
             <div class="list scroll-style" cdkDropList #batteryList="cdkDropList" [cdkDropListData]="batteries"
             (cdkDropListDropped)="drop($event)" [cdkDropListConnectedTo]="getDevices()">
-                <div class="battery" *ngFor="let battery of batteries" cdkDrag>
+                <div class="battery" *ngFor="let battery of batteries" cdkDrag [cdkDragData]="battery">
                     <span>{{battery.name}}</span>
                     <div class="icon-container">
-                        <mat-icon (click)="editBattery(battery.id)">edit</mat-icon>
-                        <mat-icon (click)="deleteBattery(battery.id)">clear</mat-icon>
+                        <mat-icon matTooltip="Изменить" (click)="editBattery(battery.id)">edit</mat-icon>
+                        <mat-icon matTooltip="Удалить" (click)="deleteBattery(battery.id)">clear</mat-icon>
                     </div>
                 </div>
             </div>

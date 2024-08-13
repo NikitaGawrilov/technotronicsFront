@@ -46,6 +46,23 @@ export class ActivityComponent implements OnInit{
     })
   }
 
+  partialyRefresh() {
+    forkJoin([
+      forkJoin(Array.from(this.devices).map((device) => this.batteryS.getPaired(device.id))).pipe(
+        tap((res) => 
+          this.devices.forEach((device, index) => device.paired_batteries = res[index])
+        )
+      ),
+      this.batteryS.getUnpaired().pipe(
+        tap((res) => this.batteries = res)
+      )
+    ]).subscribe({
+      next: (res) => {
+        // console.log(res)
+      }
+    })
+  }
+
   getDevicesNBatteries() {
     return forkJoin([
       this.deviceS.getAll().pipe(
@@ -104,7 +121,7 @@ export class ActivityComponent implements OnInit{
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.matSnackBar.open(`Аккумулятор ${result.name} добавлен`, 'OK', { duration: 3000 })
-        this.refresh()
+        this.partialyRefresh()
       }
     });
   }
@@ -117,7 +134,7 @@ export class ActivityComponent implements OnInit{
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.matSnackBar.open(`Аккумулятор ${result.name} изменён`, 'OK', { duration: 3000 })
-        this.refresh()
+        this.partialyRefresh()
       }
     });
   }
@@ -125,8 +142,24 @@ export class ActivityComponent implements OnInit{
   deleteBattery(batteryId: number) {
     this.batteryS.deleteBattery(batteryId).subscribe({
       next: (res) => {
-        this.refresh()
+        this.partialyRefresh()
         this.matSnackBar.open(`Аккумулятор ${res.name} удалён`, 'OK', { duration: 3000 })
+      }
+    })
+  }
+
+  pairBattery(batteryId: number, device: Device | undefined) {
+    let deviceId: number | null = null
+    device === undefined ? deviceId = null : deviceId = device.id
+    this.batteryS.pairBattery(batteryId, deviceId).subscribe({
+      next: (res) => {
+        if (res.paired_device_id) {
+          let pairedDeviceName = this.devices.find((device) => device.id == res.paired_device_id)?.name
+          this.matSnackBar.open(`Аккумулятор ${res.name} подключен к устройству ${pairedDeviceName}`, 'OK', { duration: 3000 })
+        } else {
+          this.matSnackBar.open(`Аккумулятор ${res.name} свободен`, 'OK', { duration: 3000 })
+        }
+        this.partialyRefresh()
       }
     })
   }
@@ -140,7 +173,7 @@ export class ActivityComponent implements OnInit{
     return res
   }
 
-  drop(event: CdkDragDrop<Battery[]>) {
+  drop(event: CdkDragDrop<Battery[]>, device?: Device) {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
@@ -150,6 +183,7 @@ export class ActivityComponent implements OnInit{
         event.previousIndex,
         event.currentIndex,
       );
+      this.pairBattery(event.item.data.id, device)
     }
   }
 

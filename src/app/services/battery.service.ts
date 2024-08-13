@@ -36,4 +36,11 @@ export class BatteryService {
   deleteBattery(batteryId: number) {
     return this.http.delete<Battery>('battery/delete', { params: { battery_id: batteryId } })
   }
+
+  pairBattery(batteryId: number, deviceId: number | null) {
+    let params = new HttpParams()
+      .set('battery_id', batteryId)
+    deviceId ? params = params.set('device_id', deviceId) : 0
+    return this.http.put<Battery>('battery/pair', {}, { params })
+  }
 }
