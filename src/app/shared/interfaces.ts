@@ -8,6 +8,6 @@ export interface Battery {
 export interface Device {
     id: number,
     name: string,
-    paired_batteries: Battery[]
+    paired_batteries?: Battery[]
     created_at: string
 }

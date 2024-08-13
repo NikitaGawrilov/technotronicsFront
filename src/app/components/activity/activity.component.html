@@ -15,7 +15,8 @@
                             <mat-icon style="display: inline;">clear</mat-icon>
                         </div>
                         <div class="list" cdkDropList [cdkDropListConnectedTo]="batteryList" [id]="'device'+device.id"
-                        [cdkDropListData]="device.paired_batteries" (cdkDropListDropped)="drop($event)">
+                        [cdkDropListData]="device.paired_batteries" (cdkDropListDropped)="drop($event)"
+                        *ngIf="device.paired_batteries">
                             <div class="battery" *ngFor="let battery of device.paired_batteries" cdkDrag
                             [cdkDragData]="battery">
                                 <span>{{battery.name}}</span>

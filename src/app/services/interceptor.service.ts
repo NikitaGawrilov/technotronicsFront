@@ -11,7 +11,7 @@ export class InterceptorService implements HttpInterceptor {
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const apiReq = req.clone({ url: `http://localhost:4200/${req.url}` });
-    console.log('itercepted');
+    // console.log('itercepted');
     return next.handle(apiReq);
   }
 }
